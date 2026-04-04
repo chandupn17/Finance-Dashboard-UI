@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply antialiased transition-theme duration-300 ease-out;
+  }
+  body {
+    @apply bg-surface-light-muted text-slate-900 dark:bg-surface-dark dark:text-slate-100 transition-theme duration-300;
+  }
+}
