@@ -1,15 +1,18 @@
 import PropTypes from 'prop-types';
 import { useEffect, useRef, useState } from 'react';
-import { ChevronDown, Menu, Moon, Sun } from 'lucide-react';
+import { ChevronDown, CircleHelp, Eye, EyeOff, Menu, Moon, Sun } from 'lucide-react';
 import { useFinanceStore } from '../../store/useFinanceStore';
 
 /**
  * @param {Object} props
  * @param {() => void} props.onMenuOpen Open sidebar (mobile)
+ * @param {() => void} props.onOpenKeyboardHelp Shortcuts & tips dialog
  */
-export function Header({ onMenuOpen }) {
+export function Header({ onMenuOpen, onOpenKeyboardHelp }) {
   const darkMode = useFinanceStore((s) => s.darkMode);
   const toggleDarkMode = useFinanceStore((s) => s.toggleDarkMode);
+  const privacyMode = useFinanceStore((s) => s.privacyMode);
+  const togglePrivacyMode = useFinanceStore((s) => s.togglePrivacyMode);
   const role = useFinanceStore((s) => s.role);
   const setRole = useFinanceStore((s) => s.setRole);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -44,6 +47,24 @@ export function Header({ onMenuOpen }) {
         </div>
       </div>
       <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+        <button
+          type="button"
+          onClick={onOpenKeyboardHelp}
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-slate-600 shadow-sm transition hover:border-sky-200 hover:bg-sky-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-300 dark:hover:border-sky-500/40 dark:hover:bg-slate-700"
+          aria-label="Keyboard shortcuts and tips"
+          title="Shortcuts (?)"
+        >
+          <CircleHelp className="h-5 w-5" aria-hidden />
+        </button>
+        <button
+          type="button"
+          onClick={togglePrivacyMode}
+          className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-slate-700 shadow-sm transition hover:border-violet-200 hover:bg-violet-50 dark:border-slate-600 dark:bg-slate-800 dark:text-violet-200 dark:hover:border-violet-500/40 dark:hover:bg-slate-700"
+          aria-label={privacyMode ? 'Show amounts' : 'Hide amounts (privacy)'}
+          aria-pressed={privacyMode}
+        >
+          {privacyMode ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+        </button>
         <button
           type="button"
           onClick={toggleDarkMode}
@@ -94,4 +115,5 @@ export function Header({ onMenuOpen }) {
 
 Header.propTypes = {
   onMenuOpen: PropTypes.func.isRequired,
+  onOpenKeyboardHelp: PropTypes.func.isRequired,
 };

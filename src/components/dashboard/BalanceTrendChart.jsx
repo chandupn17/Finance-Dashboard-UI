@@ -19,6 +19,7 @@ import { formatCurrency, lastNMonthKeys, shortMonthLabel } from '../../utils/hel
  */
 export function BalanceTrendChart({ loading }) {
   const transactions = useFinanceStore((s) => s.transactions);
+  const privacy = useFinanceStore((s) => s.privacyMode);
 
   const data = useMemo(() => {
     const anchor = new Date();
@@ -73,7 +74,7 @@ export function BalanceTrendChart({ loading }) {
                   <div className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm shadow-lg dark:border-slate-600 dark:bg-slate-800">
                     <p className="font-medium text-slate-900 dark:text-white">{row.label}</p>
                     <p className="text-sky-600 dark:text-sky-300">
-                      Net: {formatCurrency(row.balance)}
+                      Net: {privacy ? '••••' : formatCurrency(row.balance)}
                     </p>
                   </div>
                 );

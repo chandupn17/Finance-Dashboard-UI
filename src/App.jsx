@@ -4,6 +4,9 @@ import { Layout } from './components/layout/Layout';
 import { DashboardPage } from './pages/DashboardPage';
 import { TransactionsPage } from './pages/TransactionsPage';
 import { InsightsPage } from './pages/InsightsPage';
+import { PlanningPage } from './pages/PlanningPage';
+import { PulsePage } from './pages/PulsePage';
+import { NotFoundPage } from './pages/NotFoundPage';
 import { useFinanceStore } from './store/useFinanceStore';
 
 /**
@@ -30,6 +33,9 @@ export default function App() {
         <Route path="/" element={<DashboardPage />} />
         <Route path="/transactions" element={<TransactionsPage />} />
         <Route path="/insights" element={<InsightsPage />} />
+        <Route path="/planning" element={<PlanningPage />} />
+        <Route path="/pulse" element={<PulsePage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
   );

@@ -3,16 +3,17 @@ import { CATEGORIES } from '../../data/mockData';
 
 /**
  * @param {Object} props
- * @param {{ search: string, category: string, type: string, dateRange: string }} props.filters
+ * @param {{ search: string, category: string, type: string, dateRange: string, tag: string }} props.filters
+ * @param {string[]} [props.tagOptions]
  * @param {(key: string, value: string) => void} props.onChange
  * @param {() => void} props.onReset
  */
-export function TransactionFilters({ filters, onChange, onReset }) {
+export function TransactionFilters({ filters, onChange, onReset, tagOptions = [] }) {
   return (
     <div className="rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-surface-dark-muted">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-        <div className="grid flex-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
-          <div className="sm:col-span-2 xl:col-span-1">
+        <div className="grid flex-1 gap-3 sm:grid-cols-2 xl:grid-cols-6">
+          <div className="sm:col-span-2 xl:col-span-2">
             <label htmlFor="flt-search" className="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">
               Search
             </label>
@@ -59,6 +60,24 @@ export function TransactionFilters({ filters, onChange, onReset }) {
             </select>
           </div>
           <div>
+            <label htmlFor="flt-tag" className="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">
+              Tag
+            </label>
+            <select
+              id="flt-tag"
+              className="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-800 dark:text-white"
+              value={filters.tag}
+              onChange={(e) => onChange('tag', e.target.value)}
+            >
+              <option value="">All tags</option>
+              {tagOptions.map((t) => (
+                <option key={t} value={t.toLowerCase()}>
+                  {t}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
             <label htmlFor="flt-range" className="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">
               Date range
             </label>
@@ -93,7 +112,9 @@ TransactionFilters.propTypes = {
     category: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     dateRange: PropTypes.string.isRequired,
+    tag: PropTypes.string.isRequired,
   }).isRequired,
   onChange: PropTypes.func.isRequired,
   onReset: PropTypes.func.isRequired,
+  tagOptions: PropTypes.arrayOf(PropTypes.string),
 };

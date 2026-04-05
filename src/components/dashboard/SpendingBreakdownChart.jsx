@@ -36,6 +36,7 @@ const LEGEND_DOT_CLASS = [
  */
 export function SpendingBreakdownChart({ loading }) {
   const transactions = useFinanceStore((s) => s.transactions);
+  const privacy = useFinanceStore((s) => s.privacyMode);
 
   const { rows, total } = useMemo(() => {
     const map = new Map();
@@ -107,7 +108,9 @@ export function SpendingBreakdownChart({ loading }) {
                       <div className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm shadow-lg dark:border-slate-600 dark:bg-slate-800">
                         <p className="font-medium text-slate-900 dark:text-white">{p.name}</p>
                         <p className="text-rose-600 dark:text-rose-400">
-                          {formatCurrency(p.value)} ({p.pct.toFixed(1)}%)
+                          {privacy
+                            ? '••••'
+                            : `${formatCurrency(p.value)} (${p.pct.toFixed(1)}%)`}
                         </p>
                       </div>
                     );

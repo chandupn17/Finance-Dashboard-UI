@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 /**
  * @param {Object} props
  * @param {string} props.title
- * @param {string} props.value
+ * @param {import('react').ReactNode} props.value
  * @param {string} [props.subtitle]
  */
 export function InsightCard({ title, value, subtitle }) {
@@ -12,7 +12,7 @@ export function InsightCard({ title, value, subtitle }) {
       <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
         {title}
       </p>
-      <p className="mt-2 text-xl font-bold text-slate-900 dark:text-white sm:text-2xl">{value}</p>
+      <div className="mt-2 text-xl font-bold text-slate-900 dark:text-white sm:text-2xl">{value}</div>
       {subtitle ? (
         <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{subtitle}</p>
       ) : null}
@@ -22,6 +22,6 @@ export function InsightCard({ title, value, subtitle }) {
 
 InsightCard.propTypes = {
   title: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.node.isRequired,
   subtitle: PropTypes.string,
 };

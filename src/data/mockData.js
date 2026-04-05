@@ -9,6 +9,8 @@
  * @property {number} amount positive number
  * @property {Category} category
  * @property {TxType} type
+ * @property {string[]} [tags] optional labels for reporting and filters
+ * @property {string} [notes] private context (receipts, BNPL plan, split with roommate, etc.)
  */
 
 /** @type {Category[]} */
@@ -30,27 +32,27 @@ export const CATEGORIES = [
  * @type {Transaction[]}
  */
 export const mockTransactions = [
-  { id: 'a1b2c3d4-e5f6-4789-a012-345678901234', date: '2025-11-02', description: 'Monthly salary deposit', amount: 5200, category: 'Salary', type: 'income' },
-  { id: 'b2c3d4e5-f6a7-4890-b123-456789012345', date: '2025-11-03', description: 'Grocery run — weekend stock', amount: 142.35, category: 'Food', type: 'expense' },
+  { id: 'a1b2c3d4-e5f6-4789-a012-345678901234', date: '2025-11-02', description: 'Monthly salary deposit', amount: 5200, category: 'Salary', type: 'income', tags: ['payroll', 'recurring'] },
+  { id: 'b2c3d4e5-f6a7-4890-b123-456789012345', date: '2025-11-03', description: 'Grocery run — weekend stock', amount: 142.35, category: 'Food', type: 'expense', tags: ['groceries'] },
   { id: 'c3d4e5f6-a7b8-4901-c234-567890123456', date: '2025-11-05', description: 'Metro pass renewal', amount: 89, category: 'Transport', type: 'expense' },
   { id: 'd4e5f6a7-b8c9-4012-d345-678901234567', date: '2025-11-08', description: 'Freelance design sprint', amount: 1200, category: 'Freelance', type: 'income' },
-  { id: 'e5f6a7b8-c9d0-4123-e456-789012345678', date: '2025-11-10', description: 'Apartment rent', amount: 1850, category: 'Rent', type: 'expense' },
-  { id: 'f6a7b8c9-d0e1-4234-f567-890123456789', date: '2025-11-12', description: 'Streaming subscriptions', amount: 45.99, category: 'Entertainment', type: 'expense' },
+  { id: 'e5f6a7b8-c9d0-4123-e456-789012345678', date: '2025-11-10', description: 'Apartment rent', amount: 1850, category: 'Rent', type: 'expense', tags: ['housing', 'recurring'] },
+  { id: 'f6a7b8c9-d0e1-4234-f567-890123456789', date: '2025-11-12', description: 'Streaming subscriptions', amount: 45.99, category: 'Entertainment', type: 'expense', tags: ['subscription'] },
   { id: 'a7b8c9d0-e1f2-4345-a678-901234567890', date: '2025-11-14', description: 'Pharmacy & vitamins', amount: 62.4, category: 'Health', type: 'expense' },
   { id: 'b8c9d0e1-f2a3-4456-b789-012345678901', date: '2025-11-18', description: 'Electric & water bill', amount: 128.75, category: 'Utilities', type: 'expense' },
   { id: 'c9d0e1f2-a3b4-4567-c890-123456789012', date: '2025-11-20', description: 'Black Friday electronics', amount: 399, category: 'Shopping', type: 'expense' },
   { id: 'd0e1f2a3-b4c5-4678-d901-234567890123', date: '2025-11-22', description: 'Team dinner', amount: 78.2, category: 'Food', type: 'expense' },
-  { id: 'e1f2a3b4-c5d6-4789-e012-345678901234', date: '2025-12-01', description: 'Monthly salary deposit', amount: 5200, category: 'Salary', type: 'income' },
+  { id: 'e1f2a3b4-c5d6-4789-e012-345678901234', date: '2025-12-01', description: 'Monthly salary deposit', amount: 5200, category: 'Salary', type: 'income', tags: ['payroll', 'recurring'] },
   { id: 'f2a3b4c5-d6e7-4890-f123-456789012345', date: '2025-12-04', description: 'Holiday gifts', amount: 256.8, category: 'Shopping', type: 'expense' },
   { id: 'a3b4c5d6-e7f8-4901-a234-567890123456', date: '2025-12-06', description: 'Uber to airport', amount: 42.5, category: 'Transport', type: 'expense' },
   { id: 'b4c5d6e7-f8a9-4012-b345-678901234567', date: '2025-12-08', description: 'Concert tickets', amount: 180, category: 'Entertainment', type: 'expense' },
   { id: 'c5d6e7f8-a9b0-4123-c456-789012345678', date: '2025-12-10', description: 'Freelance API integration', amount: 950, category: 'Freelance', type: 'income' },
-  { id: 'd6e7f8a9-b0c1-4234-d567-890123456789', date: '2025-12-12', description: 'Apartment rent', amount: 1850, category: 'Rent', type: 'expense' },
+  { id: 'd6e7f8a9-b0c1-4234-d567-890123456789', date: '2025-12-12', description: 'Apartment rent', amount: 1850, category: 'Rent', type: 'expense', tags: ['housing', 'recurring'] },
   { id: 'e7f8a9b0-c1d2-4345-e678-901234567890', date: '2025-12-15', description: 'Annual gym membership', amount: 420, category: 'Health', type: 'expense' },
   { id: 'f8a9b0c1-d2e3-4456-f789-012345678901', date: '2025-12-18', description: 'Coffee & pastries', amount: 34.6, category: 'Food', type: 'expense' },
   { id: 'a9b0c1d2-e3f4-4567-a890-123456789012', date: '2025-12-22', description: 'Internet upgrade', amount: 79.99, category: 'Utilities', type: 'expense' },
   { id: 'b0c1d2e3-f4a5-4678-b901-234567890123', date: '2025-12-28', description: 'Year-end bonus', amount: 2100, category: 'Salary', type: 'income' },
-  { id: 'c1d2e3f4-a5b6-4789-c012-345678901234', date: '2026-01-02', description: 'Monthly salary deposit', amount: 5200, category: 'Salary', type: 'income' },
+  { id: 'c1d2e3f4-a5b6-4789-c012-345678901234', date: '2026-01-02', description: 'Monthly salary deposit', amount: 5200, category: 'Salary', type: 'income', tags: ['payroll', 'recurring'] },
   { id: 'd2e3f4a5-b6c7-4890-d123-456789012345', date: '2026-01-05', description: 'Weekly groceries', amount: 118.9, category: 'Food', type: 'expense' },
   { id: 'e3f4a5b6-c7d8-4901-e234-567890123456', date: '2026-01-07', description: 'Car maintenance', amount: 310, category: 'Transport', type: 'expense' },
   { id: 'f4a5b6c7-d8e9-4012-f345-678901234567', date: '2026-01-10', description: 'Apartment rent', amount: 1850, category: 'Rent', type: 'expense' },

@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { X } from 'lucide-react';
+import { parseTagsInput } from '../../utils/helpers';
 import { TransactionFormFields } from './TransactionFormFields';
 
 const empty = {
@@ -9,6 +10,8 @@ const empty = {
   amount: '',
   category: 'Food',
   type: 'expense',
+  tags: '',
+  notes: '',
 };
 
 /**
@@ -16,10 +19,28 @@ const empty = {
  * @param {boolean} props.open
  * @param {import('../../data/mockData.js').mockTransactions[number] | null | undefined} props.initial
  * @param {() => void} props.onClose
- * @param {(payload: { date: string, description: string, amount: number, category: string, type: string }) => void} props.onSubmit
+ * @param {(payload: { date: string, description: string, amount: number, category: string, type: string, tags?: string[], notes?: string }) => void} props.onSubmit
  */
 export function TransactionForm({ open, initial, onClose, onSubmit }) {
   const [form, setForm] = useState(empty);
+  const overlayRef = useRef(/** @type {HTMLDivElement | null} */ (null));
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const onKey = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [open, onClose]);
+
+  useEffect(() => {
+    if (!open) return;
+    const t = window.setTimeout(() => {
+      document.getElementById('tx-date')?.focus();
+    }, 0);
+    return () => window.clearTimeout(t);
+  }, [open, initial]);
 
   useEffect(() => {
     if (!open) return;
@@ -30,6 +51,8 @@ export function TransactionForm({ open, initial, onClose, onSubmit }) {
         amount: String(initial.amount),
         category: initial.category,
         type: initial.type,
+        tags: Array.isArray(initial.tags) ? initial.tags.join(', ') : '',
+        notes: initial.notes ?? '',
       });
     } else {
       setForm({
@@ -45,24 +68,34 @@ export function TransactionForm({ open, initial, onClose, onSubmit }) {
     e.preventDefault();
     const amt = parseFloat(form.amount);
     if (!form.date || !form.description.trim() || !Number.isFinite(amt) || amt <= 0) return;
+    const tags = parseTagsInput(form.tags);
     onSubmit({
       date: form.date,
       description: form.description.trim(),
       amount: amt,
       category: form.category,
       type: form.type,
+      tags,
+      notes: form.notes.trim(),
     });
     onClose();
   };
 
   return (
     <div
+      ref={overlayRef}
       className="fixed inset-0 z-50 flex items-end justify-center bg-slate-900/50 p-4 backdrop-blur-sm sm:items-center"
       role="dialog"
       aria-modal="true"
       aria-labelledby="tx-form-title"
+      onMouseDown={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
     >
-      <div className="w-full max-w-lg rounded-2xl border border-slate-200 bg-white shadow-2xl dark:border-slate-600 dark:bg-slate-900">
+      <div
+        className="w-full max-w-xl rounded-2xl border border-slate-200 bg-white shadow-2xl dark:border-slate-600 dark:bg-slate-900"
+        onMouseDown={(e) => e.stopPropagation()}
+      >
         <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4 dark:border-slate-700">
           <h2 id="tx-form-title" className="text-lg font-semibold text-slate-900 dark:text-white">
             {initial ? 'Edit transaction' : 'Add transaction'}

@@ -7,7 +7,7 @@ const labelCls = 'block text-sm font-medium text-slate-700 dark:text-slate-300';
 
 /**
  * @param {Object} props
- * @param {{ date: string, description: string, amount: string, category: string, type: string }} props.form
+ * @param {{ date: string, description: string, amount: string, category: string, type: string, tags: string, notes: string }} props.form
  * @param {(f: typeof props.form | ((p: typeof props.form) => typeof props.form)) => void} props.setForm
  */
 export function TransactionFormFields({ form, setForm }) {
@@ -87,6 +87,32 @@ export function TransactionFormFields({ form, setForm }) {
           </select>
         </div>
       </div>
+      <div>
+        <label htmlFor="tx-tags" className={labelCls}>
+          Tags (comma-separated)
+        </label>
+        <input
+          id="tx-tags"
+          type="text"
+          placeholder="e.g. recurring, travel"
+          className={inputCls}
+          value={form.tags}
+          onChange={(e) => setForm((f) => ({ ...f, tags: e.target.value }))}
+        />
+      </div>
+      <div>
+        <label htmlFor="tx-notes" className={labelCls}>
+          Context notes (optional)
+        </label>
+        <textarea
+          id="tx-notes"
+          rows={3}
+          placeholder="BNPL schedule, split with roommate, receipt link, etc."
+          className={`${inputCls} resize-y min-h-[4.5rem]`}
+          value={form.notes}
+          onChange={(e) => setForm((f) => ({ ...f, notes: e.target.value }))}
+        />
+      </div>
     </>
   );
 }
@@ -98,6 +124,8 @@ TransactionFormFields.propTypes = {
     amount: PropTypes.string.isRequired,
     category: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
+    tags: PropTypes.string.isRequired,
+    notes: PropTypes.string.isRequired,
   }).isRequired,
   setForm: PropTypes.func.isRequired,
 };

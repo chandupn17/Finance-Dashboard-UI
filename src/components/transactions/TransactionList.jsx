@@ -12,6 +12,11 @@ import { SortableTh } from './SortableTh';
  * @param {(k: string) => void} props.onSort
  * @param {(tx: import('../../data/mockData.js').mockTransactions[number]) => void} props.onEdit
  * @param {(tx: import('../../data/mockData.js').mockTransactions[number]) => void} props.onDelete
+ * @param {boolean} [props.selectionEnabled]
+ * @param {string[]} [props.selectedIds]
+ * @param {(id: string) => void} [props.onToggleSelect]
+ * @param {() => void} [props.onSelectAllVisible]
+ * @param {boolean} [props.allVisibleSelected]
  */
 export function TransactionList({
   loading,
@@ -21,6 +26,11 @@ export function TransactionList({
   onSort,
   onEdit,
   onDelete,
+  selectionEnabled = false,
+  selectedIds = [],
+  onToggleSelect,
+  onSelectAllVisible,
+  allVisibleSelected = false,
 }) {
   if (loading) {
     return (
@@ -51,6 +61,18 @@ export function TransactionList({
       <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-700">
         <thead className="bg-slate-50/80 dark:bg-slate-800/50">
           <tr>
+            {selectionEnabled ? (
+              <th scope="col" className="w-10 px-2 py-3 sm:px-3">
+                <span className="sr-only">Select</span>
+                <input
+                  type="checkbox"
+                  className="h-4 w-4 rounded border-slate-300 text-sky-600 focus:ring-sky-500 dark:border-slate-600 dark:bg-slate-800"
+                  checked={allVisibleSelected}
+                  onChange={onSelectAllVisible}
+                  aria-label="Select all visible rows"
+                />
+              </th>
+            ) : null}
             <SortableTh columnKey="date" label="Date" sort={sort} onSort={onSort} />
             <th
               scope="col"
@@ -59,6 +81,12 @@ export function TransactionList({
               Description
             </th>
             <SortableTh columnKey="category" label="Category" sort={sort} onSort={onSort} />
+            <th
+              scope="col"
+              className="hidden px-3 py-3 text-left text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 sm:table-cell sm:px-4"
+            >
+              Tags
+            </th>
             <th
               scope="col"
               className="px-3 py-3 text-left text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 sm:px-4"
@@ -90,6 +118,9 @@ export function TransactionList({
               isAdmin={isAdmin}
               onEdit={() => onEdit(tx)}
               onDelete={() => onDelete(tx)}
+              selectionEnabled={selectionEnabled}
+              selected={selectedIds.includes(tx.id)}
+              onToggleSelect={() => onToggleSelect?.(tx.id)}
             />
           ))}
         </tbody>
@@ -109,4 +140,9 @@ TransactionList.propTypes = {
   onSort: PropTypes.func.isRequired,
   onEdit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
+  selectionEnabled: PropTypes.bool,
+  selectedIds: PropTypes.arrayOf(PropTypes.string),
+  onToggleSelect: PropTypes.func,
+  onSelectAllVisible: PropTypes.func,
+  allVisibleSelected: PropTypes.bool,
 };

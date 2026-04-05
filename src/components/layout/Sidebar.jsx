@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, ListOrdered, Lightbulb, X } from 'lucide-react';
+import { Activity, LayoutDashboard, ListOrdered, Lightbulb, Target, X } from 'lucide-react';
 
 const linkBase =
   'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors';
@@ -12,6 +12,8 @@ const active =
 const items = [
   { to: '/', label: 'Dashboard', icon: LayoutDashboard },
   { to: '/transactions', label: 'Transactions', icon: ListOrdered },
+  { to: '/planning', label: 'Planning', icon: Target },
+  { to: '/pulse', label: 'Pulse', icon: Activity },
   { to: '/insights', label: 'Insights', icon: Lightbulb },
 ];
 

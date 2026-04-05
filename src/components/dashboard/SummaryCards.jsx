@@ -4,6 +4,7 @@ import { ArrowDownRight, ArrowUpRight, ListChecks, Wallet } from 'lucide-react';
 import { endOfMonth, startOfMonth, subMonths } from 'date-fns';
 import { useFinanceStore } from '../../store/useFinanceStore';
 import { animateNumber, formatCurrency } from '../../utils/helpers';
+import { SensitiveText } from '../ui/SensitiveText';
 import { TrendBadge } from './TrendBadge';
 import { sumWindow } from './summaryMetrics';
 
@@ -116,9 +117,9 @@ export function SummaryCards({ loading }) {
           <div className="flex items-start justify-between gap-3">
             <div>
               <p className="text-sm font-medium text-slate-500 dark:text-slate-400">{c.title}</p>
-              <p className="mt-2 text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+              <SensitiveText as="p" className="mt-2 text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
                 {c.value}
-              </p>
+              </SensitiveText>
               <div className="mt-2">{c.trend}</div>
             </div>
             <span

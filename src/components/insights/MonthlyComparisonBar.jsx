@@ -9,6 +9,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
+import { useFinanceStore } from '../../store/useFinanceStore';
 import { formatCurrency } from '../../utils/helpers';
 
 /**
@@ -17,6 +18,8 @@ import { formatCurrency } from '../../utils/helpers';
  * @param {boolean} props.loading
  */
 export function MonthlyComparisonBar({ data, loading }) {
+  const privacy = useFinanceStore((s) => s.privacyMode);
+
   if (loading) {
     return (
       <div className="h-80 animate-pulse rounded-xl bg-slate-200/80 dark:bg-slate-700/80" />
@@ -59,7 +62,8 @@ export function MonthlyComparisonBar({ data, loading }) {
                               : 'text-rose-600 dark:text-rose-400'
                           }
                         >
-                          {p.name}: {formatCurrency(Number(p.value))}
+                          {p.name}:{' '}
+                          {privacy ? '••••' : formatCurrency(Number(p.value))}
                         </p>
                       ))}
                     </div>
